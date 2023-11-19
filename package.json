@@ -6,9 +6,23 @@
   "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "dev": "parcel ./src/index.html",
+    "start": "node server.js",
+    "lint": "eslint --ignore-path ./.gitignore --fix \"./**/*.{js,ts}\"",
+    "lint:check": "eslint --ignore-path ./.gitignore --quiet \"./**/*.{js,ts}\"",
+    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
+    "format:check": "prettier --ignore-path ./.gitignore --check \"./**/*.{html,json,js,ts,css}\"",
+    "test": "jest"
   },
   "dependencies": {
     "express": "^4.16.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "nodemon": "^3.0.1",
+    "parcel": "^2.10.3",
+    "prettier": "^3.1.0"
   }
 }

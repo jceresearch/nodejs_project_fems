@@ -2,20 +2,25 @@
 	"root": true,
 	"env": {
 		"node": true,
-		"es6": true
+		"es6": true,
+    "browser": true
 	},
 	"rules": {
-		"no-console": 0,
+		"no-console": 1,  // 0 = off, 1 = warn, 2 = error
 		"eqeqeq":"warn",
-		"no-cond-assign": 0,
 		"no-unused-vars": 1,
 		"no-extra-semi": "warn",
 		"semi": "warn"
 	},
-	"extends": "eslint:recommended",
+  "plugins":["import"],
+	"extends":[ "eslint:recommended", "plugin:import/errors","prettier"],
 	"parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2018,
 		"ecmaFeatures": {
 			"experimentalObjectRestSpread": true
 		}
 	}
 }
+
+
