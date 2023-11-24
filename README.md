@@ -1,3 +1,23 @@
+
+This is a working repo setup with NodeJS and a few tooling for the IDE
+specifically for javascript, not yet Typscript
+E.g. eslint, prettier, bunder (parcel, not sure it works with nodejs), nodemon 
+(to reload on change, works with nodejs).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Try Out Development Containers: Node.js
 
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/vscode-remote-try-node)
