@@ -17,5 +17,8 @@ app.get('/', (req, res) => {
 	res.send('Hello remote world!\n');
 });
 
+//Static pages
+app.use(express.static('src/static'));
+
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);

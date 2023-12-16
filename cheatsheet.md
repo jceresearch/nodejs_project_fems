@@ -18,5 +18,9 @@ Editorconfig
     Create .editorconfig and install the extension in VScode
     Then put there a few recommended cross editor values
 
-
+D3
+    npm i -D d3
+    D3 is a library for data visualization
+    https://d3js.org/
+    
   
