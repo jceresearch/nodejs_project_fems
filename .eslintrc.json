@@ -1,26 +1,29 @@
 {
-	"root": true,
-	"env": {
-		"node": true,
-		"es6": true,
-    "browser": true
-	},
-	"rules": {
-		"no-console": 1,  // 0 = off, 1 = warn, 2 = error
-		"eqeqeq":"warn",
-		"no-unused-vars": 1,
-		"no-extra-semi": "warn",
-		"semi": "warn"
-	},
-  "plugins":["import"],
-	"extends":[ "eslint:recommended", "plugin:import/errors","prettier"],
-	"parserOptions": {
+  "root": true,
+  "env": {
+    "node": true,
+    "es6": true,
+    "browser": true,
+
+
+  },
+  "rules": {
+    "no-console": 1, // 0 = off, 1 = warn, 2 = error
+    "eqeqeq": "warn",
+    "no-unused-vars": 1,
+    "no-extra-semi": "warn",
+    "semi": "warn"
+  },
+  "plugins": ["import", "prettier"],
+  "extends": ["eslint:recommended", "plugin:import/errors", "prettier"],
+  "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2018,
-		"ecmaFeatures": {
-			"experimentalObjectRestSpread": true
-		}
-	}
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "globals": {
+    "d3": "readonly"
+  }
 }
-
-

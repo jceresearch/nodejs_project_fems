@@ -23,4 +23,11 @@ D3
     D3 is a library for data visualization
     https://d3js.org/
     
+Nodemon
+    npm i -D nodemon
+    Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+    https://nodemon.io/
   
+REST API dependencies:
+  npm i -D  body-parser cors express helmet morgan
+  https://hevodata.com/learn/building-a-secure-node-js-rest-api/
