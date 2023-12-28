@@ -1,8 +1,14 @@
-
 This is a working repo setup with NodeJS and a few tooling for the IDE
 specifically for javascript, not yet Typscript
-E.g. eslint, prettier, bunder (parcel, not sure it works with nodejs), nodemon 
-(to reload on change, works with nodejs).
+E.g. 
+- eslint,
+- prettier,
+- parcel (bundler, in future I will try vite)
+- nodemon (to reload on change, works with nodejs).
+
+This particular project takes some hardcoded data, loads into nodejs and then pushes into a d3.js viz
+
+
 
 ## How to run
   
