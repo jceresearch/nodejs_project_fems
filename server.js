@@ -1,7 +1,4 @@
 /*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
 
 "use strict";
 
@@ -42,7 +39,7 @@ app.use(morgan("combined"));
 
 // defining an endpoint to return message
 app.get("/api", (req, res) => {
-
+  
   fs.readFile("./data/timeseries.json", "utf8", (err, jsonString) => {
     if (err) {
       console.log("Error reading file from disk:", err);

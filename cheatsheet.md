@@ -31,3 +31,20 @@ Nodemon
 REST API dependencies:
   npm i -D  body-parser cors express helmet morgan
   https://hevodata.com/learn/building-a-secure-node-js-rest-api/
+
+
+
+GPT
+    npm i openai
+
+dotenv
+    npm i dotenv
+    to inject environment variables into process.env
+    needs a .env file in the root of the project with simple 
+    KEY=VALUE pairs
+    in particular for the openai key you need to create a .env file with
+    OPENAI_API_KEY=sk-xxxxx
+    and then in the code you can access it with
+    process.env.OPENAI_API_KEY, though openai will do it for you
+    if you have the key in the environment variable OPENAI_API_KEY
+    
