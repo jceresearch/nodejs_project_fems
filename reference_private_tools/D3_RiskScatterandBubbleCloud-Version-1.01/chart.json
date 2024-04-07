@@ -1,0 +1,104 @@
+
+{
+
+    "fields": {
+        "threat":  {"fieldname":"threat", "label":"Threat","isMagnitude":false, "isDimension":true},
+        "rag": {"fieldname":"rag", "label":"RAG Compliance","isMagnitude":false, "isDimension":true},
+        "level": {"fieldname":"level","label":"Level","isMagnitude":false, "isDimension":true},
+        "owner": {"fieldname":"owner", "label":"Owner","isMagnitude":false, "isDimension":true},
+        "likelihood": {"fieldname":"likelihood","label":"Likelihood","isMagnitude":true, "isDimension":true},
+        "impact": {"fieldname":"impact" ,"label":"Impact","isMagnitude":true, "isDimension":true},
+        "risklxi": {"fieldname":"risklxi" ,"label":"Lik x Imp","isMagnitude":true, "isDimension":true},
+        "ragremediation": {"fieldname":"ragremediation" ,"label":"RAG Remediation","isMagnitude":false, "isDimension":true},
+        "updateaging": {"fieldname":"updateaging" ,"label":"Update age","isMagnitude":true, "isDimension":true},
+        "temperature": {"fieldname":"temperature" ,"label":"Overall Heat","isMagnitude":true, "isDimension":true},
+        "timestampcreated": {"fieldname":"timestampcreated" ,"label":"Created On","isMagnitude":true, "isDimension":true},
+        "timestampyodated":{"fieldname":"timestampyodated" ,"label":"Updated On","isMagnitude":true, "isDimension":true},
+        "timestampclosed": {"fieldname":"timestampclosed" ,"label":"Closed On","isMagnitude":true, "isDimension":true},
+        "drilllevel": {"fieldname":"drilllevel" ,"label":"Drill Down","isMagnitude":false, "isDimension":true},
+        "status": {"fieldname":"status" ,"label":"Status","isMagnitude":false, "isDimension":true},
+        "title":{"fieldname":"title" ,"label":"Title","isMagnitude":false, "isDimension":false},
+        "description":{"fieldname":"description" ,"label":"Description","isMagnitude":false, "isDimension":false},
+        "label":{"fieldname":"label" ,"label":"Label","isMagnitude":false, "isDimension":false},
+        "last_update":{"fieldname":"last_update" ,"label":"Last Update","isMagnitude":false, "isDimension":false},
+        "last_update_on":{"fieldname":"last_update_on" ,"label":"Updated on","isMagnitude":false, "isDimension":false},
+        "last_update_by":{"fieldname":"last_update_by" ,"label":"Updated by","isMagnitude":false, "isDimension":false}
+
+    },
+
+
+"dimensionx":["likelihood"], 
+"dimensiony":["impact"],
+"dimensionz":["drilllevel","updateaging"],
+"dimensionpointsize":["risklxi"],
+"dimensionpointcolour":["threat","owner","rag","level","status"],
+"dimensiongroup":["threat","owner","rag","level","level"],
+"dimensiontime":["timestampcreated","timestampupdated","timestampclosed"],
+"dimensiondetail":["drilllevel"],
+"dimensiontransparency":["updateaging"],
+"detailfields":["title","ref","description","last_update","last_update_on","last_update_by", "likelihood","impact","status","rag"],
+"labelfields":["label","ref","rag","owner"],
+"geolocationfields":[],
+"editablefields":[],
+
+
+"views":{
+	"riskmap":{
+		"dimensions":""
+		},
+	"bigblob":{
+		"dimensions":""
+		}
+},
+
+"legend": {    
+
+        "threat": {
+            "operational": "Operational",
+            "disaster": "Disaster",
+            "third party": "Third Party",
+            "malicious": "Malicious"
+        },
+        "rag": {
+            "red": "Red",
+            "amber": "Amber",
+            "green": "Green"
+        },
+        "level": {
+            "vce": "VCE",
+            "itstrapp": "ITStraPP",
+            "itmt": "ITMT",
+            "smog": "SMOG"
+        },
+        "status": {
+            "open": "Open",
+            "closed": "Closed"
+        }   
+  
+    },
+ 
+
+"colorscheme": {
+        "threat": {
+            "operational": "#a6611a",
+            "disaster": "#DFC27D",
+            "third party": "#80CDC1",
+            "malicious": "#018571"
+        },
+        "rag": {
+            "red": "#FF0000",
+            "amber": "#ffff99",
+            "green": "#00CC00"
+        },
+        "level": {
+            "vce": "#67a9cf",
+            "itstrapp": "#EF8A62",
+            "itmt": "#0080FF",
+            "smog": "#2166AC"
+        },
+        "status": {
+            "open": "#FF0000",
+            "closed":"#00CC00"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+
+
+#inspectionarea {
+  width: 70%;
+  // border: 1px solid #000;
+}
+
+.inspection {
+  width: 50%; /* Not necessary, since only 70% width remains */
+}

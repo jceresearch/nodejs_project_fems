@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+ <title>
+  Scatter/bubble chart demo
+ </title>
+<meta charset="utf-8">
+
+
+<html>
+<head> 
+  
+<script src="libraries/jquery-2.0.3.min.js"></script>
+<script src="libraries/jquery.mobile-1.4.0.min.js"></script>
+<script src="libraries/d3.v3.min.js" charset="utf-8"></script>
+<link rel="stylesheet" href="libraries/jquery.mobile-1.4.0.min.css" charset="utf-8"/>
+
+<!--
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+-->
+
+<link rel="stylesheet" type="text/css" href="styles/canvas.css">
+<link rel="stylesheet" type="text/css" href="styles/legend.css">
+<link rel="stylesheet" type="text/css" href="styles/inspection.css">
+<link rel="stylesheet" type="text/css" href="styles/layout.css">
+
+
+ </head>
+   
+<body onload="init()">
+
+
+
+<div data-role="page" id="home">      
+    
+  
+    
+    <div data-role="panel" id="panel_1" data-position="right" data-display="overlay"  data-swipe-close="false" data-dismissible="false">    
+      
+      <div data-role="collapsible">
+          <h3>Grouping</h3>     
+            <button onclick="arrangeriskmap();" id="button_riskMap">Risk Map</button>        
+            <button onclick="arrangeblobsbydimension('owner');" id="button_byOwner">By owner</button>      
+            <button onclick="arrangeblobsbydimension('rag');" id="button_byRag">By RAG</button>        
+            <button onclick="arrangeblobsbydimension('threat');" id="button_byCategory">By Category</button>        
+            <button onclick="arrangebigblobbydimension('threat');" id="button_arrangeBigBlobbyCategory">Category Pie</button>
+            <button onclick="arrangebigblobbydimension('owner');" id="button_arrangeBigBlobbyOwner">Owner Pie</button>        
+      </div>
+      <div data-role="collapsible">    
+          <h3>Labels</h3>
+        <button onclick="togglelabels();" id="button_toggleLabels">On/Off Labels</button>    
+        <button onclick="plotlabel();" id="button_cycleLabels">Cycle Labels</button>
+        </div>
+      <div data-role="collapsible">
+          <h3>Colours</h3>
+        <button onclick="colorizebydimension('owner');" id="button_colorByOwner">Color/Owner</button>        
+        <button onclick="colorizebydimension('threat');" id="button_colorByCategory">Color/Category</button>        
+        <button onclick="colorizebydimension('rag');" id="button_colorRag">Color/RAG</button>     
+        <button onclick="colorizebydimension();" id="button_colorNeutral">Clear colors</button>        
+      </div>
+          <div data-role="collapsible">
+          <h3>Sizes</h3>
+        <button onclick="togglesize();" id="button_sizeNeutral">Bubble Size</button>          
+        <button onclick="canvasresize();" id="button_bigCanvas">Canvas Size</button>  
+        </div>
+        <button onclick="closepanel('panel_1');"  id="button_closePanel">Close</button>  
+    </div>
+
+
+<a id="button_editChart" href="#panel_1" data-role="button"  data-icon="bars" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-c">
+    <span class="ui-btn-inner"><span class="ui-btn-text">Change Chart</span>
+    <span class="ui-icon ui-icon-bars ui-icon-shadow">&nbsp;</span>
+    </span>
+</a>
+
+<button onclick="edit_data_point();" id="buttonUpdateDatapoint"  data-inline="true" >Edit Point</button>  
+
+
+
+<div data-role="popup" id="popup_1" >    
+     <form id="form_updateDatapoint" action="updateDatapoint" method="post">     
+     
+      
+        <div data-role="collapsible" data-theme="a" data-content-theme="a">
+            
+            <h3>Latest Update</h3>
+            
+            <label for="status_update">Status Update:</label>
+            <textarea name="status_update" id="form_field_status" data-mini="true" ></textarea>
+            
+      
+             
+             <div class="ui-grid-a" >
+               <div class="ui-block-a"><label for="userid"  data-inline="true">Updated by:</label></div>
+               <div class="ui-block-b"><input type="text" name="userid" id="form_field_userid" class="ui-input-text" value="" data-mini="true"  /></div>
+               
+             </div>
+            
+        </div>
+
+
+        <div data-role="collapsible" data-theme="a" data-content-theme="a">
+            
+            <h3>Detail</h3>
+              <div class="ui-grid-c" >
+                  
+                  
+				<div class="ui-block-a"><label for="likelihood">Likelihood:</label></div>
+				<div class="ui-block-b"><input id="form_field_likelihood" class="ui-input-text" type="number" value="" name="likelihood" data-mini="true"  />	</div>
+				
+
+    
+    
+        <div class="ui-block-c"><label  for="impact">Impact</label></div>
+        <div class="ui-block-d"><input id="form_field_impact" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" type="number" value="" name="impact"  data-mini="true"  /></div>
+
+   
+
+        <div class="ui-block-a"> <label  for="threat">Threat:</label></div>
+        <div class="ui-block-b">
+                <select name="threat" id="form_field_threat" data-mini="true"  >
+                    
+                <option value="disaster">Disaster</option>
+                <option value="malicious">Malicious</option>
+                <option value="third party">Third Party</option>
+                <option value="operational">Operational</option>
+                </select>  
+        
+          </div>
+     
+          
+          <div class="ui-block-c"><label    for="rag">Compliance Rating:</label></div>
+           <div class="ui-block-d">
+                <select name="rag" id="form_field_rag" data-mini="true"  >
+                <option value="red">Red</option>
+                <option value="amber">Amber</option>
+                <option value="green">Green</option>
+                </select>  
+           </div>
+
+
+ <div class="ui-block-a"><label  for="owner">Owner:</label></div>
+  <div class="ui-block-b"><input type="text" class="ui-body-c ui-corner-all ui-shadow-inset" name="owner" id="form_field_owner" value="" data-mini="true" /></div>
+
+  
+            
+ <div class="ui-block-a">            <label for="status_update" >Description:</label></div>        
+            <textarea name="description" id="form_field_description" data-mini="true"></textarea>
+            
+      
+            </div>
+  </div> 
+  
+      <a href="#chartarea" data-rel="close" data-role="button" data-theme="a" data-icon="delete"  >Close</a>
+   
+    
+    <button type="submit" data-theme="a" name="submit" value="submit-value" class="ui-btn-hidden" aria-disabled="false">Submit</button>
+    
+    
+    
+    
+</form>
+
+
+</div>
+
+    
+  <table> 
+    
+    <tr>
+<td>
+<div id="chartarea"> </div>
+</td>
+<td>
+<div id="legendarea"> </div>
+</td>
+
+
+</tr>
+<table id="inspectionarea">
+<tr>
+ 
+<td class="inspection">    
+<div id="comments"> </div>
+</td>
+
+</tr>
+</table>
+
+
+</table>
+
+
+
+</div>
+
+<script src="engine_bubbles.js" charset="utf-8"></script>
+
+<script src="auxfunctions.js" charset="utf-8"></script>
+
+
+<script>
+	
+	
+function init()
+{
+ 
+ //Ajax call using Jquery to load the chart definition into a JSON object settings
+   
+  $.ajax({
+      url: 'chart.json',
+  async: false,
+  dataType: 'json',
+  success: function (response) {
+    settings=response;
+    
+  }
+});
+
+
+// Ajax call to load the dataset, presently from a JSON file, but eventually to a backend
+  $.ajax({
+      url: 'data/data50.json',
+  async: false,
+  dataType: 'json',
+  success: function (response) {
+    dataset_json=response;
+    
+  }
+});
+
+
+
+var commentdiv;
+commentdiv = d3.select("#comments").attr("onclick","clearbubbleinfo()");
+
+
+// we create the serieslist and detaillist structures, dictionary of arrays and array respectively
+
+
+for(var key in settings.fields)
+    {        
+    if (settings.fields[key].isDimension === true)
+    {
+             serieslist[key]=[];           
+     }else
+     {        
+             
+             detaillist.push(key);
+      };    
+}
+
+
+
+
+
+for(var i=0; i< dataset_json.length ;i++)
+{
+    var d = dataset_json[i];
+    var point={       
+        id: i,      
+        description:d.description,   
+        label:d.label,      
+        ref:d.ref,   
+        title:d.title,
+        };
+        
+   
+    for(var key in serieslist)
+    {
+        
+        if (settings.fields[key].isMagnitude===true)
+        {
+         
+             point[key]= +d[settings.fields[key].fieldname];
+             serieslist[key].push( +d[settings.fields[key].fieldname]);
+             
+             
+        }
+        else{
+ 
+           if  (typeof d[settings.fields[key].fieldname] != 'undefined')
+           {
+            point[key]= d[settings.fields[key].fieldname].toLowerCase();
+            serieslist[key].push(d[settings.fields[key].fieldname].toLowerCase());
+            }
+          };
+    }    
+
+
+    dataset.push(point);
+ 
+
+  };
+  
+//we collapse serieslist into unique names, using D3 utility function  set.values()
+
+
+  for(var key in serieslist)
+  {
+   serieslist[key]=d3.set(serieslist[key]).values();  
+   
+   
+   
+        //we look up the legend data in the chart.json to apply that manual sorting if it exist       
+           var sortedseries=[];
+            
+            if(typeof settings.legend[key]==='undefined'  )
+            {
+               //by default we sort alphabetically
+   
+               serieslist[key].sort();
+               sortedseries= serieslist[key];    
+                
+            }
+            else
+            {
+                
+            for (var el in settings.legend[key] )    
+            {
+              
+                var n= serieslist.indexOf(el);
+                if (n != 'undefined'){
+                sortedseries.push(el);
+                }
+            };
+                       
+            };
+
+  serieslist[key]=sortedseries;
+ 
+  };
+
+
+// we draw the graph with a default dimensions to colorize 
+drawcanvas();
+plotbackground();
+plotaxis();
+plotdata(dataset);
+resetselection();
+colorizebydimension("threat");
+plotlegend("threat");
+
+//we setup the post process for the form to update the risk
+
+var frm = $('#form_updateDatapoint');
+
+frm.submit(function (ev) {
+    var json_payload=frm.serialize();
+   var request= $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                alert('ok');
+            },
+            error:function(request, status, error){
+                alert("error uploading: "+json_payload) + " Response text:"+request.responseText;
+                 }
+    });
+    ev.preventDefault();
+});
+
+};
+
+
+function edit_data_point(class_name){
+    class_name = class_name || "dot_selected"   ; 
+    var i=0;
+    var selected_point= d3.select("."+class_name).each(
+        function(d){
+            i++ ;
+    
+            $( "#popup_1" ).popup( "open", {disabled:false, positionTo:"#buttonUpdateDatapoint"});
+            form_populate(d);    
+            form_refresh("form_updateDatapoint");       
+            }  
+    );
+
+};
+
+
+function form_refresh(formId) {
+    // This function will go through the form and for certain types of elements will attempt to refresh the UI to reflect the underlying value
+
+    $.each($("select, radio, textbox"), function(i,v){
+    var $el=$(v);
+    var type = $el.prop('type');
+    if (typeof type === 'undefined'){
+     //undefined ie we didnt recognise the form element
+        }
+    else
+        {     
+            switch(type){
+                case 'checkbox':
+        
+                case 'radio':
+             
+                case 'select-one':
+                
+                 $el.selectmenu( "refresh" );
+                default:
+                }
+
+
+        }
+
+    }
+    );
+    };
+function form_populate(json_data) {
+    
+    
+// reset form values from json object
+$.each(json_data, function(name, val){
+    var $el = $('[name="'+name+'"]');
+    var type = $el.prop('type');
+    
+    if (typeof type === 'undefined'){
+     //undefined ie we didnt find the form element          
+        }
+    else
+        {     
+            switch(type){
+                case 'checkbox':
+                    $el.prop("checked", val);
+                    break;
+                case 'radio':
+                    $el.filter('[value="'+val+'"]').attr("checked", "checked");
+                    break;
+                case 'select-one':
+
+                    var sel = document.getElementById("form_field_"+name);
+                    for(var i = 0, j = sel.options.length; i < j; ++i) {                   
+                        if(sel.options[i].value === val) {
+                           $el.selectedIndex = i;                       
+                           break;
+                       }
+                    }
+                
+            default:
+                    $el.val(val);
+          
+        }
+        };
+}
+);
+};
+
+function closepanel(panelID){
+  console.log("Closing");
+  $( "#"+ panelID ).panel( "close" );  
+    
+};
+
+
+</script>
+
+  </body>
+</html>

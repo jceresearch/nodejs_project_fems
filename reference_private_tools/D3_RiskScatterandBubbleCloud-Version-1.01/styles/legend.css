@@ -1,0 +1,61 @@
+
+       .legend_rect_selected {
+          stroke-width: 2;
+          stroke: #0000;     
+        }
+        
+       .legend_rect {
+          stroke-width:0;
+        }       
+        
+        .legend_label{
+            
+          font: 10px sans-serif;  
+              fill:black; 
+               
+        }
+    
+    
+        .legend_plus{
+            
+          font: 15px sans-serif;      
+          fill: redblack;
+          text-anchor:start;
+          }
+           
+        .legend_plus_selected{
+            
+          font: 15px sans-serif;      
+          fill: red; 
+        }
+       .legend_minus{
+            
+          font: 15px sans-serif;      
+              fill: black; 
+              text-anchor:start;
+        }
+        
+            .legend_x{
+            
+          font: 15px sans-serif;      
+              fill: black; 
+              text-anchor:start;
+        }
+       .legend_minus_selected{
+            
+          font: 15px sans-serif;  
+          fill:red;     
+        }
+        
+        .legend_x_selected{
+            
+          font: 15px sans-serif;  
+          fill:red;     
+        }  
+        
+        
+       .legend_reset{
+     text-anchor:left; 
+   font: 20px sans-serif;  
+       }
+       

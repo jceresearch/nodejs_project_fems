@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<title>
+    Scatter plot simple example (no JSON use)
+</title>
+<meta charset="utf-8">
+
+
+<html>
+
+<head>
+    <style>
+    body {
+        font: 10px sans-serif;
+    }
+    .infotext {
+        font: 15px sans-serif;
+    }
+    .clusterlabel {
+        font: 20px sans-serif;
+    }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+    .dot {
+        stroke: #000;
+    }
+    </style>
+    
+    
+    <script src="d3.v3.min.js" charset="utf-8"></script>
+
+    <script>
+    var margin = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40
+    },
+        width = 900 - margin.left - margin.right,
+        height = 700 - margin.top - margin.bottom;
+
+    var x = d3.scale.linear()
+        .rangeRound([0, width]);
+
+    var y = d3.scale.linear()
+        .rangeRound([height, 0]);
+
+    var bubblesize = d3.scale.pow()
+        .domain([1, 25])
+        .range([5, 30]);
+
+
+    var color = d3.scale.category20();
+
+
+
+    x.domain([0, 5.5])
+        .nice();
+    y.domain([0, 5.5])
+        .nice();
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .tickValues([0, 1, 2, 3, 4, 5])
+        .tickFormat(d3.format("0f"))
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .tickValues([0, 1, 2, 3, 4, 5])
+        .tickFormat(d3.format("0f"))
+        .orient("left");
+
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var svglegend = d3.select("body")
+        .append("svg")
+        .attr("width", width / 5)
+        .attr("height", height);
+
+    var commentdiv = d3.select("body")
+        .append("div")
+        .attr("id", "comments")
+        .attr("onclick", "clearbubbleinfo()");
+
+    var rag = {
+        "Red": "#FF0000",
+        "Amber": "#FFFF30",
+        "Green": "#00CC00"
+    };
+    var padding = 6;
+    var def_radius = 8;
+    var dataset = [];
+    var categories = [];
+    var owners = [];
+    var nodes = [];
+    var nodesoriginal = [];
+    var levels = [];
+    var force = d3.layout.force();
+
+    var settings; //Chart definition parameters loaded from the json file, for reusability
+
+
+
+    function init() {
+
+
+            d3.csv("data.csv", function (error, data) {
+                data.forEach(function (d, i) {
+                    var point = {
+                        id: i,
+                        yvalue: +d.yvalue,
+                        xvalue: +d.xvalue,
+                        ctg0: d.d.ctg0,
+                        descr: d.descr,
+                        ctg1: d.ctg1,
+                        ctg2: d.ctg2,
+                        crg3: d.ctg3,
+                        label: d.label,
+                        ref: d.ref
+                    };
+                    dataset.push(point);
+
+
+                });
+
+  
+
+                generatechart();
+            });
+
+    };
+
+    function generatechart() {
+        plotbackground();
+        plotaxis();
+        plotlegend(categories);
+        plotdata(dataset);
+
+    }
+
+
+
+    function plotlegend(category) {
+
+        // Note that here we use a separate svg object, as we want to be able to position it separately 
+        // however note that there is a risk of having trouble down the line re exporting it as a bitmap, etc.
+        // it is fairly easy to change the code to create the legend within the main svg
+
+        category_index = settings.categories.indexOf(category);
+        var legendseries = settings.
+        svglegend.selectAll(".legend")
+            .remove();
+
+
+
+        var legend = svglegend.selectAll(".legend")
+            .data(legendseries)
+            .enter()
+            .append("g")
+            .attr("class", "legend")
+            .attr("transform", function (d, i) {
+                return "translate(0," + i * 20 + ")";
+            }); // Here we create the groups one g per each series element, with an offset 20 in the y coordinates
+
+        legend.append("rect")
+            .attr("x", "0")
+            .attr("class", "legend")
+            .attr("width", 20)
+            .attr("height", 20)
+            .style("fill", function (d) {
+                return color(d);
+            }); //We append the rectangles, colour is an ordinal scale working as an index, calling each element of the series (case sensitive!!!)
+
+        legend.append("text")
+            .attr("x", "22")
+            .attr("class", "legend")
+            .attr("y", "10")
+            .attr("dy", ".35em") // for explanation https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-svg_text
+        .style("text-anchor", "start")
+            .text(function (d) {
+                return d;
+            }); // We append the text label
+
+
+    };
+
+
+
+    function displaybubbleinfo(nodedata) {
+
+
+
+        var commenttext = "Ref:" + nodedata.ref + "<br>Owner: " + nodedata.owner + "<br>Notes:" + nodedata.comment + "<br>Impact:" + nodedata.impact + "<br>Likelihood:" + nodedata.likelihood;
+
+        document.getElementById('comments')
+            .innerHTML = commenttext;
+
+
+    };
+
+    function clearbubbleinfo() {
+
+        d3.selectAll("circle")
+            .style("stroke-width", 0);
+        d3.selectAll("circle")
+            .style("stroke", "black");
+        document.getElementById('comments')
+            .innerHTML = "";
+
+
+    };
+
+
+    function plotbackground() {
+
+        var imgs = svg.selectAll("image")
+            .data([0]);
+        imgs.enter()
+            .append("svg:image")
+            .attr("xlink:href", "background.png")
+            .attr("x", "0")
+            .attr("y", "0")
+            .attr("preserveAspectRatio", "none")
+            .attr("width", width)
+            .attr("height", height);
+
+    };
+
+
+
+    function plotaxis() {
+
+        svg.append("g")
+            .attr("class", "xaxis axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("class", "axis label")
+            .attr("x", width - 6)
+            .attr("y", -6)
+            .style("text-anchor", "end")
+            .text(settings.xaxis);
+
+        svg.append("g")
+            .attr("class", "yaxis axis")
+            .call(yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("x", -6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text(settings.yaxis);
+
+
+    };
+
+    function plotdata(dataset) {
+
+
+        dataset.forEach(function (d) {
+            var node = {
+                y: y(d.yvalue),
+                x: x(d.xvalue),
+                yori: y(d.impact),
+                xori: x(d.likelihood),
+                clusterfocusy: 0,
+                clusterfocusx: 0,
+                yvalue: d.yvalue,
+                xvalue: d.xvalue,
+                weight: 1,
+                radius: def_radius,
+                id: d.id,
+                desc: d.desc,
+                ref: d.ref,
+                label: d.label,
+                ctg0: d.ctg0,
+                ctg1: d.ctg1,
+                ctg2: d.ctg2,
+                ctg3: d.ctg3,
+                ctg4: d.ctg4,
+                ctg5: d.ctg5,
+                ctg6: d.ctg6,
+                ctg7: d.ctg7,
+                ctg8: d.ctg8,
+                ctg9: d.ctg9,
+
+
+            };
+            nodes.push(node);
+            nodesoriginal.push(node);
+        });
+
+
+        color.domain(categories);
+        svg.selectAll("dot")
+            .data(nodes)
+            .enter()
+            .append("circle")
+            .attr("class", function (d) {
+                return "dot series_" + d.category.split(' ')
+                    .join('_')
+                    .toLowerCase();
+            }) // we define two classes one for dot and one for the series, so we can select that serie and change attributes specifically
+        .attr("id", function (d) {
+            return d.id;
+        })
+            .attr("cy", function (d) {
+                return d.x;
+            })
+            .attr("cx", function (d) {
+                return d.y;
+            })
+            .style("fill", function (d) {
+                return color(d.category);
+            })
+            .style("stroke-width", "0")
+            .style("stroke", "#FFFFFF")
+            .attr("r", def_radius)
+            .call(force.drag);
+
+
+        svg.selectAll("circle")
+            .on("click", function (d) {
+
+
+                if(d3.select(this)
+                    .style("stroke-width") > 0) {
+                    d3.select(this)
+                        .style("stroke-width", 0);
+                    d3.select(this)
+                        .style("stroke", "black");
+                    clearbubbleinfo();
+
+                } else {
+                    d3.selectAll("circle")
+                        .style("stroke-width", 0);
+                    d3.selectAll("circle")
+                        .style("stroke", "black");
+                    d3.select(this)
+                        .style("stroke-width", 3);
+                    d3.select(this)
+                        .style("stroke", "grey");
+                    displaybubbleinfo(d);
+                }
+            });
+
+
+        arrangeriskmap();
+
+
+    }
+
+
+    function plotlabel() {
+
+        var n = 0;
+
+        d3.selectAll(".dotlabel")
+            .each(function () {
+                n++;
+            });
+
+
+
+        if(n == 0) {
+
+
+            svg.append("g")
+                .selectAll(".dotlabel")
+                .data(nodes)
+                .enter()
+                .append("text")
+                .attr("class", "dotlabel")
+                .attr("id", function (d) {
+                    return d.id;
+                })
+                .text(function (d) {
+                    return d.label;
+                });
+
+            force.resume();
+
+
+        } else
+
+        {
+
+            svg.selectAll(".dotlabel")
+                .remove();
+        };
+
+    };
+
+
+    function colorizebycategory() {
+
+        color.domain(categories);
+        plotlegend(categories);
+        svg.selectAll("circle")
+            .style("fill", function (d) {
+                return color(d.category);
+            });
+
+
+
+    };
+
+    function colorizebyowner() {
+
+        color.domain(owners);
+        plotlegend(owners);
+        svg.selectAll("circle")
+            .style("fill", function (d) {
+                return color(d.owner);
+            });
+
+
+    };
+
+    function colorizebyrag() {
+
+        svglegend.selectAll(".legend")
+            .remove();
+        svg.selectAll("circle")
+            .style("fill", function (d) {
+                return rag[d.rag];
+            });
+    };
+
+
+    function colorizeneutral() {
+
+        svg.selectAll("circle")
+            .style("fill", function (d) {
+                return "#0000FF";
+            });
+        svglegend.selectAll(".legend")
+            .remove();
+
+    };
+
+
+    function sizeneutral() {
+
+        bubblesize = d3.scale.linear()
+            .domain([1, 25])
+            .range([8, 8]);
+
+
+
+
+        svg.selectAll("circle")
+            .attr("r", function (d, i) {
+
+                nodes[d.id]["radius"] = def_radius;
+                return def_radius;
+            });
+
+        force.resume();
+
+    };
+
+    function sizelikehoodbyimpact() {
+
+
+        bubblesize = d3.scale.pow()
+            .domain([1, 25])
+            .range([10, 20]);
+        svg.selectAll("circle")
+            .attr("r", function (d, i) {
+
+                nodes[d.id]["radius"] = bubblesize(d.impact * d.likelihood);
+                return bubblesize(d.impact * d.likelihood);
+            });
+
+
+        force.resume();
+    };
+
+    function sizelikehoodbyimpactextreme() {
+
+        bubblesize = d3.scale.pow()
+            .domain([1, 25])
+            .range([1, 40]);
+
+        svg.selectAll("circle")
+            .attr("r", function (d, i) {
+
+
+                nodes[d.id]["radius"] = bubblesize(d.impact * d.likelihood);
+                return bubblesize(d.impact * d.likelihood);
+            });
+
+
+
+        force.resume();
+    };
+
+
+
+
+    function arrangebigblobbyowner() {
+
+
+
+        colorizebyowner();
+        sizelikehoodbyimpact();
+
+        var clusterfocusscale = d3.scale.ordinal()
+            .domain(owners)
+            .rangeBands([1, 360]);
+
+
+        svg.selectAll("image")
+            .attr("visibility", "hidden");
+        svg.selectAll(".axis")
+            .attr("visibility", "hidden");
+
+        svg.selectAll(".clusterlabel")
+            .remove();
+
+        force.stop();
+
+        force.gravity(.5)
+            .charge(1)
+            .friction(.1)
+            .nodes(nodes)
+            .size([width, height])
+            .on("tick", tickconverge);
+
+
+        var ntotalsteps = 3000;
+        var ncounter = 2000;
+
+        var intervalid = window.setInterval(bigblobconverge, 250);
+
+
+        function bigblobconverge() {
+            if(ncounter > 50) {
+                ncounter -= ncounter * .3;
+
+
+
+                dataset.forEach(function (d) {
+
+                    if(typeof nodes[d.id] != 'undefined') {
+                        nodes[d.id]["clusterfocusx"] = width / 2 + ncounter * Math.cos(clusterfocusscale(d.owner) * (Math.PI / 180)),
+                        nodes[d.id]["clusterfocusy"] = height / 2 + ncounter * Math.sin(clusterfocusscale(d.owner) * (Math.PI / 180));
+                        force.gravity(0.02)
+                            .charge(0)
+                            .friction(0);
+                        force.resume();
+                    }
+                });
+
+            } else {
+                clearInterval(intervalid);
+            }
+
+
+        };
+
+    };
+
+
+
+
+    function arrangebigblobbycategory() {
+
+
+        sizelikehoodbyimpact();
+        colorizebycategory();
+
+        var clusterfocusscale = d3.scale.ordinal()
+            .domain(categories)
+            .rangeBands([1, 360]);
+
+
+        svg.selectAll("image")
+            .attr("visibility", "hidden");
+        svg.selectAll(".axis")
+            .attr("visibility", "hidden");
+
+
+
+
+        svg.selectAll(".clusterlabel")
+            .remove();
+
+        force.stop();
+
+        force.gravity(0)
+            .charge(1)
+            .friction(0)
+            .nodes(nodes)
+            .size([width, height])
+            .on("tick", tickconverge);
+
+
+
+
+        var ntotalsteps = 3000;
+        var ncounter = 3000;
+
+        var intervalid = window.setInterval(bigblobconverge, 300);
+
+
+        function bigblobconverge() {
+            if(ncounter > 50) {
+                ncounter -= ncounter * .3;
+
+
+
+                dataset.forEach(function (d) {
+
+                    if(typeof nodes[d.id] != 'undefined') {
+                        nodes[d.id]["clusterfocusx"] = width / 2 + ncounter * Math.cos(clusterfocusscale(d.category) * (Math.PI / 180)),
+                        nodes[d.id]["clusterfocusy"] = height / 2 + ncounter * Math.sin(clusterfocusscale(d.category) * (Math.PI / 180));
+                        force.gravity(0.02)
+                            .charge(1)
+                            .friction(0);
+                        force.resume();
+                    }
+                });
+
+            } else {
+                clearInterval(intervalid);
+            }
+
+
+        };
+
+
+
+
+    };
+
+
+
+
+    function arrangeblobsbyowner() {
+
+        colorizebyowner();
+        sizelikehoodbyimpact();
+
+        var clusterfocusscale = d3.scale.ordinal()
+            .domain(owners)
+            .rangeBands([0, width], 1);
+
+        var clusterfocusscaleexpanded = d3.scale.ordinal()
+            .domain(owners)
+            .rangeBands([1, width * 12]);
+
+        svg.selectAll("image")
+            .attr("visibility", "hidden");
+        svg.selectAll(".axis")
+            .attr("visibility", "hidden");
+
+        svg.selectAll(".clusterlabel")
+            .remove();
+
+
+
+        var label = svg.selectAll(".clusterlabel")
+            .data(owners)
+            .enter()
+            .append("g")
+            .attr("class", "clusterlabel");
+        label.append("text")
+            .attr("x", function (d) {
+                return clusterfocusscale(d) - .2 * (width / categories.length);
+            })
+            .attr("class", "clusterlabel")
+            .attr("y", height * .90)
+            .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .text(function (d) {
+                return d;
+            });
+
+
+        force.stop();
+        force.gravity(0)
+            .charge(0)
+            .friction(.5)
+            .linkStrength(0)
+            .nodes(nodes)
+            .size([width, height])
+            .on("tick", tickconverge);
+
+
+        var ntotalsteps = 3000;
+        var ncounter = 3000;
+        force.start();
+
+        var intervalid = window.setInterval(converge, 300);
+
+        function converge() {
+            if(ncounter > 5) {
+
+
+
+
+                svg.selectAll("circle")
+                    .each(function (d) {
+
+
+                        if(ncounter > 500) {
+
+                            nodes[d.id]["clusterfocusx"] = clusterfocusscale(d.owner) + (clusterfocusscaleexpanded(d.owner) - clusterfocusscale(d.owner)) * ncounter / ntotalsteps;
+                            nodes[d.id]["clusterfocusy"] = height / 2;
+
+
+
+                        } else {
+
+                            nodes[d.id]["clusterfocusx"] = clusterfocusscale(d.owner);
+                            nodes[d.id]["clusterfocusy"] = height / 2;
+
+                        };
+                    });
+
+                ncounter -= ncounter * .4;
+                force.gravity(.02)
+                    .charge(0)
+
+                .friction(.2);
+                force.resume();
+
+            } else {
+                clearInterval(intervalid);
+            }
+
+
+        };
+
+
+
+
+    };
+
+
+
+
+    function arrangeblobsbycategory(ctg) {
+
+        colorizebycategory();
+        sizelikehoodbyimpact();
+
+        var clusterfocusscale = d3.scale.ordinal()
+            .domain(categories)
+            .rangePoints([0, width], 1);
+        var clusterfocusscaleexpanded = d3.scale.ordinal()
+            .domain(categories)
+            .rangeBands([1, width * 12]);
+
+
+        svg.selectAll("image")
+            .attr("visibility", "hidden");
+        svg.selectAll(".axis")
+            .attr("visibility", "hidden");
+
+        svg.selectAll(".clusterlabel")
+            .remove();
+
+        force.stop();
+        force.gravity(0)
+            .charge(0)
+            .friction(.5)
+            .nodes(nodes)
+            .size([width, height])
+            .on("tick", tickconverge);
+
+
+
+
+        var label = svg.selectAll(".clusterlabel")
+            .data(categories)
+            .enter()
+            .append("g")
+            .attr("class", "clusterlabel");
+
+
+        label.append("text")
+            .attr("x", function (d) {
+                return clusterfocusscale(d) - .33 * (width / categories.length);
+            })
+            .attr("class", "clusterlabel")
+            .attr("y", height * .90)
+            .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .text(function (d) {
+                return d;
+            });
+
+        var ntotalsteps = 3000;
+        var ncounter = 3000;
+        force.start();
+
+        var intervalid = window.setInterval(converge, 300);
+
+        function converge() {
+            if(ncounter > 5) {
+
+
+
+
+                svg.selectAll("circle")
+                    .each(function (d) {
+
+
+                        if(ncounter > 500) {
+
+                            nodes[d.id]["clusterfocusx"] = clusterfocusscale(d.category) + (clusterfocusscaleexpanded(d.category) - clusterfocusscale(d.category)) * ncounter / ntotalsteps;
+                            nodes[d.id]["clusterfocusy"] = height / 2;
+
+
+
+                        } else {
+
+                            nodes[d.id]["clusterfocusx"] = clusterfocusscale(d.category);
+                            nodes[d.id]["clusterfocusy"] = height / 2;
+
+                        };
+                    });
+
+                ncounter -= ncounter * .4;
+                force.gravity(0)
+                    .charge(0)
+
+                .friction(.2);
+                force.resume();
+
+            } else {
+                clearInterval(intervalid);
+            }
+
+
+        };
+
+
+
+
+    };
+
+
+    function arrangeriskmap() {
+
+
+        color.domain(categories);
+        plotlegend(categories);
+
+
+
+        dataset.forEach(function (d) {
+            if(typeof nodes[d.id] != 'undefined') {
+                nodes[d.id]["x"] = x(d.likelihood);
+                nodes[d.id]["y"] = y(d.impact);
+                nodes[d.id]["radius"] = 8;
+            } else {
+
+
+            };
+        });
+
+        svg.selectAll(".clusterlabel")
+            .remove();
+        svg.selectAll("circle")
+            .attr("r", function (d, i) {
+                return 8;
+            })
+            .style("fill", function (d) {
+                return color(d.category);
+            })
+            .attr("cy", function (d) {
+                return d.yori;
+            })
+            .attr("cx", function (d) {
+                return d.xori;
+            });
+
+
+        svg.selectAll("image")
+            .attr("visibility", "visible");
+        svg.selectAll(".axis")
+            .attr("visibility", "visible");
+
+
+
+
+        force.gravity(0)
+            .charge(-.5)
+            .friction(0)
+            .nodes(nodes)
+            .size([width, height])
+            .on("tick", tickfloat)
+            .start();
+
+
+    };
+
+
+
+
+    function tickfloat(e) {
+
+        svg.selectAll("circle")
+            .each(collide(.5))
+            .attr("cx", function (d, i) {
+                return d.x;
+            })
+            .attr("cy", function (d, i) {
+                return d.y;
+            });
+
+        svg.selectAll(".dotlabel")
+            .attr("x", function (d, i) {
+                return -2 * d.radius + d.x;
+            })
+            .attr("y", function (d, i) {
+                return d.radius + d.y + 10;
+            });
+
+    };
+
+
+
+
+    function tickconverge(e) {
+
+        svg.selectAll("circle")
+            .each(gravity(.2 * e.alpha))
+            .each(collide(.5))
+            .attr("cx", function (d, i) {
+                return d.x;
+            })
+            .attr("cy", function (d, i) {
+                return d.y;
+            });
+
+        svg.selectAll(".dotlabel")
+            .attr("x", function (d, i) {
+                return -2 * d.radius + d.x;
+            })
+            .attr("y", function (d, i) {
+                return d.radius + d.y + 10;
+            });
+
+    };
+
+
+    // Move nodes toward cluster focus.
+    function gravity(alpha) {
+        return function (d) {
+            d.y += (d.clusterfocusy - d.y) * alpha;
+            d.x += (d.clusterfocusx - d.x) * alpha;
+        };
+    };
+
+
+
+    // Resolve collisions between nodes.
+    function collide(alpha) {
+        var quadtree = d3.geom.quadtree(nodes);
+        return function (d) {
+            var r = d.radius + padding,
+                nx1 = d.x - r,
+                nx2 = d.x + r,
+                ny1 = d.y - r,
+                ny2 = d.y + r;
+            quadtree.visit(function (quad, x1, y1, x2, y2) {
+                if(quad.point && (quad.point !== d)) {
+                    var x = d.x - quad.point.x,
+                        y = d.y - quad.point.y,
+                        l = Math.sqrt(x * x + y * y),
+                        r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                    if(l < r) {
+                        l = (l - r) / l * alpha;
+                        d.x -= x *= l;
+                        d.y -= y *= l;
+                        quad.point.x += x;
+                        quad.point.y += y;
+                    }
+                }
+                return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+            });
+        };
+    }
+    </script>
+
+</head>
+
+<body onload="init()">
+
+    <div>
+        <button onclick="arrangeriskmap();" id="buttonRiskmap">Risk Map</button>
+        <button onclick="arrangeblobsbyowner();" id="buttonbyOwner">Group by owner</button>
+        <button onclick="arrangeblobsbycategory();" id="buttonByCategory">Group by Category</button>
+        <button onclick="arrangebigblobbycategory();" id="buttonArrangeBigBlobbyCategory">Total by category</button>
+        <button onclick="arrangebigblobbyowner();" id="buttonArrangeBigBlobbyOwner">Total by Owner</button>
+        <button onclick="plotlabel();" id="buttontogglelabels">Toggle Labels</button>
+    </div>
+
+    <div>
+        <button onclick="colorizebyowner();" id="buttonColourByOwner">Colour by Owner</button>
+        <button onclick="colorizebycategory();" id="buttonColourByCategory">Colour by Category</button>
+        <button onclick="colorizebyrag();" id="buttonColourRag">Colour by RAG</button>
+        <button onclick="colorizeneutral();" id="buttonColourNeutral">Clear Colours</button>
+        <button onclick="sizeneutral();" id="buttonSizeNeutral">Remove Size</button>
+        <button onclick="sizelikehoodbyimpact();" id="buttonSizeLikelihoodByImpact">Size=LikxImp</button>
+        <button onclick="sizelikehoodbyimpactextreme();" id="buttonSizeLikelihoodByImpactExtreme">Size=LikxImp X</button>
+    </div>
+
+
+
+</body>
+
+</html>

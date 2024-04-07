@@ -1,0 +1,51 @@
+"impact","likelihood","threat","comment","rag","owner","level","label","ref"
+4,1,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ","Green","SW","ITM","Ref:1",1
+2,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci","Green","PP","SMOG","Ref:2",2
+3,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua","Amber","SW","ITM","Ref:3",3
+5,1,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.","Green","BG","SMOG","Ref:4",4
+5,3,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation u","Amber","SW","ITM","Ref:5",5
+5,3,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisi","Amber","SW","ITM","Ref:6",6
+2,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in re","Green","AT","SMOG","Ref:7",7
+4,2,"Disaster","Lorem ipsum dolor sit amet, consectetur adipis","Red","BS","ITSTRAPP","Ref:8",8
+2,1,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi","Amber","BS","ITSTRAPP","Ref:9",9
+2,4,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo conse","Amber","BS","SMOG","Ref:10",10
+2,5,"Third Party","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat","Amber","MB","SMOG","Ref:11",11
+3,5,"Third Party","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nos","Amber","SW","ITM","Ref:12",12
+2,5,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. D","Amber","PP","ITM","Ref:13",13
+2,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed d","Amber","FM","ITM","Ref:14",14
+3,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute iru","Amber","JC","ITM","Ref:15",15
+4,1,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Du","Amber","MB","SMOG","Ref:16",16
+3,2,"Third Party","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco","Green","MB","SMOG","Ref:17",17
+2,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut al","Amber","SG","SMOG","Ref:18",18
+2,1,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute","Green","BS","SMOG","Ref:19",19
+2,1,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et do","Amber","FM","SMOG","Ref:20",20
+3,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis au","Amber","JK","SMOG","Ref:21",21
+5,1,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute i","Green","JFK","SMOG","Ref:22",22
+4,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercita","Amber","PP","ITM","Ref:23",23
+2,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing eli","Red","SW","SMOG","Ref:24",24
+4,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo ","Red","SW","ITM","Ref:25",25
+3,4,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqu","Amber","SW","SMOG","Ref:26",26
+2,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut","Amber","SW","SMOG","Ref:27",27
+3,4,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labor","Amber","BG","SMOG","Ref:28",28
+4,3,"Operational","Lorem ipsum dolor sit amet, conse","Amber","BG","ITM","Ref:29",29
+2,1,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ","Amber","SW","SMOG","Ref:30",30
+2,3,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor","Amber","SW","SMOG","Ref:31",31
+3,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labo","Red","SW","ITM","Ref:32",32
+2,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui","Green","SW","SMOG","Ref:33",33
+4,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris","Amber","JC","SMOG","Ref:34",34
+3,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex e","Amber","SW","SMOG","Ref:35",35
+2,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna a","Green","JC","SMOG","Ref:36",36
+2,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo conse","Green","SW","SMOG","Ref:37",37
+3,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui","Amber","KW","SMOG","Ref:38",38
+2,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis","Amber","KW","SMOG","Ref:39",39
+4,1,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis no","Green","SW","ITM","Ref:40",40
+2,2,"Malicious","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exer","Green","PP","SMOG","Ref:41",41
+3,3,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, se","Amber","SW","ITM","Ref:42",42
+2,1,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicin","Green","BG","SMOG","Ref:43",43
+4,3,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad ","Amber","SW","ITM","Ref:44",44
+4,3,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore ma","Amber","SW","ITM","Ref:45",45
+2,2,"Operational","Lorem ipsum dolor sit amet, con","Green","AT","SMOG","Ref:46",46
+4,2,"Disaster","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et do","Red","BS","ITSTRAPP","Ref:47",47
+2,1,"Operational","Lorem ipsum dolor sit amet, co","Amber","BS","ITSTRAPP","Ref:48",48
+2,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo c","Amber","BS","SMOG","Ref:49",49
+2,2,"Operational","Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor in","Amber","MB","SMOG","Ref:50",50

@@ -1,0 +1,24 @@
+        .axis path,  .axis line {
+          fill: none;
+          stroke: #0000;
+         shape-rendering:crispEdges;
+        }
+        
+        .dot {
+           stroke-width:0;
+           stroke:black ;
+        }
+        
+        .dot_selected {
+           stroke-width:3;
+           stroke:blue;
+
+        }
+
+          
+        .cluster_label{
+          font:20px sans-serif;   
+          dy:".35em";
+          text-anchor:start;
+        }
+    
