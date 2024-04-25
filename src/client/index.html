@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clustered bubble chart with force direct in D3.JS</title>
+  <link rel="stylesheet" type="text/css" href="style.css" >
+ <!--
+ old:
+  <script type="text/javascript" src="d3.v5.js"></script>
+ <script type="text/javascript" src="d3.v7.js"></script>
+
+ -->
+
+ 
+</head>
+
+<body>
+  <div id="title_div"></div>
+  
+  Color by:
+  <button type="button" id="changeColourRag">Criticality</button>
+  <button type="button" id="changeColourGroup">Department</button>
+  <button type="button" id="changeColourSAAS">SAAS</button>
+  <button type="button" id="changeColourOwner">Owner</button>
+
+
+  </BR>
+  Group by:
+  <button type="button" id="changeGroupingRag">Criticality</button>
+  <button type="button" id="changeGroupingGroup">Department</button>
+  <button type="button" id="changeGroupingSAAS">SAAS</button>
+  <button type="button" id="changeGroupingOwner">Owner</button>
+  
+
+</BR>
+  <button type="button" id="saveButton">Export to PNG</button>
+  <button type="button" id="clearSelectionButton">Clear Selection</button>
+  </BR>
+  
+
+  
+  <script type="module" src="shapes.js"></script>
+	
+
+
+</body>
+</html>
+

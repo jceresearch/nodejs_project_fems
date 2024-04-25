@@ -48,3 +48,66 @@ dotenv
     process.env.OPENAI_API_KEY, though openai will do it for you
     if you have the key in the environment variable OPENAI_API_KEY
     
+
+
+
+
+# NodeJS project
+
+Frontend masters course on nodejs from zero 
+https://frontendmasters.com/courses/node-js-v3/introduction/?q=jest&pid=ehyaBEyiou
+
+
+## Cheatsheet:
+
+* To install the bundler
+  - npm i -D parcel
+  - set the script entry in package.json 
+    the  --no-cache is to avoid some random error I am getting for which the solution is delete the cache each time it happens , you can skip it
+  to run you use:
+  
+  npm run dev
+
+  and it will create a server that will regenerate and refresh each time you change a file
+
+* Alternative to restart  after each change you can use
+  npm install -D nodemon
+  Install nodemon to restart the server on each file change  
+  then run in the terminal: 
+    nodemon .
+  but it is not needed if you have parcel!!!
+
+
+* To install prettier as a styler, remember to install also the prettier extension in VSC, also in settings:
+   - format on save
+   - require configuration file
+   - set prettier as default formatter 
+   - create .prettierrc with an {} inside
+
+   npm install -D prettier
+
+Create .editorconfig
+  - install the extension for VSC EditorConfig for VSCode
+  - check the docs for what you put there, things like indentation etc
+
+Install ESLint
+  - check it is in the extensions in VSC
+  - npm install -D  eslint eslint-plugin-import  eslint-config-prettier
+  - create .eslintrc.json
+
+Install tests framework
+  npm install -D jest
+
+
+Consider using  XState for modeling FSM
+  a library for finite state machine
+
+
+If you want to update all packages to their latest versions regardless of the version ranges specified in your package.json file, you can use the npm-check-updates package. Here's how:
+
+Install npm-check-updates globally by running npm install -g npm-check-updates.
+
+Run ncu -u. This will update all version numbers in your package.json file to their latest versions.
+
+Run npm install to install the updated packages.
+

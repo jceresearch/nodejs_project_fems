@@ -1,0 +1,26 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  text {
+  font: 10px sans-serif;
+  };
+}
+svg{
+  border:1px solid grey;
+}
+circle {
+    stroke: #565352;
+    stroke-width: 1;
+}
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    width: 150px;
+    /*height: 28px;         */
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightgrey;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+  }
